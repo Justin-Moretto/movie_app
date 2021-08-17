@@ -1,2 +1,3 @@
 # movie_app
-Flutter/Dart mobile application which displays latest releases of movies in Canada
+
+An open-source mobile application built with Dart/Flutter. This app displays latest releases of movies in Canada.
