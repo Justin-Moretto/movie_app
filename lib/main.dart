@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -37,12 +40,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _movieTitle = "Movie Title";
+  String _releaseDate = 'August 18 2021';
+  String _moviePoster =
+      "https://c.tenor.com/I6kN-6X7nhAAAAAi/loading-buffering.gif";
 
-  void _getLatestMovie() {
-    setState(() {
-      _counter++;
-    });
+  //simple funciton to test making a request to the movie db api.
+  Future _getLatestMovie() async {
+    var url = Uri.parse(
+        "https://api.themoviedb.org/3/movie/550?api_key=6467cd9826ddf9112a2360aff2b1b3a2");
+    var response = await http.get(url);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var movieInfo = json.decode(response.body);
+      print(movieInfo);
+      setState(() {
+        _movieTitle = movieInfo["original_title"];
+        _releaseDate = movieInfo["release_date"];
+        _moviePoster =
+            "https://image.tmdb.org/t/p/original/" + movieInfo["poster_path"];
+      });
+    }
   }
 
   @override
@@ -59,20 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
           //this is the column where movies are displayed
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.local_movies),
+            Image.network(
+              _moviePoster ?? null,
+              height: 350,
+            ),
             Text(
-              'Movie Title',
+              _movieTitle,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              'August 18 2021',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              _releaseDate,
             ),
           ],
         ),
