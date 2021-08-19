@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import './widgets/movie_card.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -73,27 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.indigo.shade800,
       ),
       body: Center(
-        child: Column(
-          //this is the column where movies are displayed
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.network(
-              _moviePoster ?? null,
-              height: 350,
-            ),
-            Text(
-              _movieTitle,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              _releaseDate,
-            ),
-          ],
-        ),
-      ),
+          child: MovieCard(
+        poster: _moviePoster,
+        releaseDate: _releaseDate,
+        title: _movieTitle,
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: _getLatestMovie,
         tooltip: 'getLatestMovie',
