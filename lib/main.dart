@@ -42,25 +42,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _movieTitle = "Movie Title";
-  String _releaseDate = 'August 18 2021';
-  String _moviePoster =
-      "https://c.tenor.com/I6kN-6X7nhAAAAAi/loading-buffering.gif";
+  String _movieTitle = "Fetching movie title...";
+  String _releaseDate = 'Fetching release date...';
+  String _moviePoster;
+  var _latestReleases;
+
+  Widget _createMovieCards(release) {
+    List<Widget> list = <Widget>[];
+    for (var i = 0; i < release.length; i++) {
+      list.add(
+        new MovieCard(
+          poster: "https://image.tmdb.org/t/p/original/" +
+              release[i]["poster_path"],
+          releaseDate: release[i]["release_date"],
+          title: release[i]["original_title"],
+        ),
+      );
+    }
+    return Column(
+      children: list,
+    );
+  }
 
   //simple funciton to test making a request to the movie db api.
   Future _getLatestMovie() async {
     var url = Uri.parse(
         "https://api.themoviedb.org/3/movie/550?api_key=6467cd9826ddf9112a2360aff2b1b3a2");
+    var url2 = Uri.parse(
+        "https://api.themoviedb.org/3/movie/upcoming?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1");
     var response = await http.get(url);
-    print(response.statusCode);
+    var response2 = await http.get(url2);
+    print(response2.statusCode);
     if (response.statusCode == 200) {
       var movieInfo = json.decode(response.body);
-      print(movieInfo);
+      var latestReleases = json.decode(response2.body)["results"];
+      print('RESULTS: ${latestReleases}');
       setState(() {
         _movieTitle = movieInfo["original_title"];
         _releaseDate = movieInfo["release_date"];
         _moviePoster =
             "https://image.tmdb.org/t/p/original/" + movieInfo["poster_path"];
+        _latestReleases = latestReleases;
       });
     }
   }
@@ -68,18 +90,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called. ex: by the _incrementCounter method above.
-
+    _moviePoster ?? _getLatestMovie();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.indigo.shade800,
       ),
       body: Center(
-          child: MovieCard(
-        poster: _moviePoster,
-        releaseDate: _releaseDate,
-        title: _movieTitle,
-      )),
+        child: SingleChildScrollView(
+          child: _latestReleases.length > 1
+              ? _createMovieCards(_latestReleases)
+              : SizedBox(),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getLatestMovie,
         tooltip: 'getLatestMovie',
