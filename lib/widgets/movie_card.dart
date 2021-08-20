@@ -9,37 +9,46 @@ class MovieCard extends StatelessWidget {
     @required this.releaseDate,
   });
 
-  final String poster;
+  String poster;
   final String title;
   final String releaseDate;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(11),
-          color: Colors.blueGrey.shade100),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Image.network(
-            poster,
-            height: 400,
+    poster = "https://image.tmdb.org/t/p/original/" + poster;
+    return Column(
+      children: [
+        Container(
+          width: 285,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(11),
+              color: Colors.blueGrey.shade100),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Image.network(
+                poster,
+                height: 400,
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                releaseDate,
+              ),
+            ],
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            releaseDate,
-          ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 20,
+        )
+      ],
     );
   }
 }
