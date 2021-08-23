@@ -37,16 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final apiEndpoints = {
     "upcoming":
         "https://api.themoviedb.org/3/movie/upcoming?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
-    "latest":
-        "https://api.themoviedb.org/3/movie/latest?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US",
+    "top_rated":
+        "https://api.themoviedb.org/3/movie/top_rated?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
     "now_playing":
         "https://api.themoviedb.org/3/movie/now_playing?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
   };
 
   var _query = "upcoming";
-
-  var apiUrl = Uri.parse(
-      "https://api.themoviedb.org/3/movie/upcoming?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1");
 
   Widget _createMovieCards(releases) {
     return Column(
@@ -63,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future _getLatestMovies() async {
+    var apiUrl = Uri.parse(apiEndpoints[_query]);
     var response = await http.get(apiUrl);
     if (response.statusCode == 200) {
       setState(() {
@@ -78,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
       case "upcoming":
         title = "Upcoming Releases:";
         break;
-      case "latest":
-        title = "Latest Releases:";
+      case "top_rated":
+        title = "Top Rated:";
         break;
       case "now_playing":
         title = "Now playing:";
@@ -95,14 +93,22 @@ class _MyHomePageState extends State<MyHomePage> {
     _latestReleases ?? _getLatestMovies();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.local_movies),
-        title: Text(widget.title),
+        title: Text(_displayTitle()),
         actions: [
           IconButton(
             icon: const Icon(Icons.local_movies),
             tooltip: 'Upcoming',
             onPressed: () {
-              print('switch display');
+              setState(() {
+                if (_query == "upcoming") {
+                  _query = "now_playing";
+                } else if (_query == "now_playing") {
+                  _query = "top_rated";
+                } else if (_query == "top_rated") {
+                  _query = "upcoming";
+                }
+                _getLatestMovies();
+              });
             },
           ),
         ],
