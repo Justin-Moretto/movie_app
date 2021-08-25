@@ -1,4 +1,0 @@
-final API_key = "6467cd9826ddf9112a2360aff2b1b3a2";
-
-final API_readAccessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NDY3Y2Q5ODI2ZGRmOTExMmEyMzYwYWZmMmIxYjNhMiIsInN1YiI6IjYxMWMwN2VkNTE0YzRhMDAyOTlkNmMxYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.cXLB1Zd5UTKDRypPm2nfQi12AnxPh1eMmf9d7frylTA";

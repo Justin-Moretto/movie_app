@@ -2,11 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_config/flutter_config.dart';
 
 import './widgets/movie_card.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
+  await FlutterConfig.loadEnvVariables();
+
   runApp(MyApp());
+}
+
+/// Access class for dev vars
+class Env {
+  static String get API_KEY => FlutterConfig.get('API_KEY');
 }
 
 class MyApp extends StatelessWidget {
@@ -18,15 +27,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: MyHomePage(title: 'Latest Releases:'),
+      home: MyHomePage(title: 'Latest Releases:', apiKey: Env.API_KEY),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, @required this.apiKey}) : super(key: key);
 
   final String title;
+  final String apiKey;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -34,14 +44,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _latestReleases;
-  final apiEndpoints = {
-    "upcoming":
-        "https://api.themoviedb.org/3/movie/upcoming?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
-    "top_rated":
-        "https://api.themoviedb.org/3/movie/top_rated?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
-    "now_playing":
-        "https://api.themoviedb.org/3/movie/now_playing?api_key=6467cd9826ddf9112a2360aff2b1b3a2&language=en-US&page=1",
-  };
 
   var _query = "upcoming";
 
@@ -60,12 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future _getLatestMovies() async {
+    final apiKey = widget.apiKey;
+    final apiEndpoints = {
+      "upcoming":
+          "https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=en-US&page=1",
+      "top_rated":
+          "https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&language=en-US&page=1",
+      "now_playing":
+          "https://api.themoviedb.org/3/movie/now_playing?api_key=$apiKey&language=en-US&page=1",
+    };
     var apiUrl = Uri.parse(apiEndpoints[_query]);
     var response = await http.get(apiUrl);
     if (response.statusCode == 200) {
       setState(() {
         _latestReleases = json.decode(response.body)["results"];
-        print(_latestReleases);
+        //print(_latestReleases);
       });
     }
   }
