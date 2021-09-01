@@ -50,11 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _createMovieCards(releases) {
     return Column(
       children: releases
-          .map<Widget>(
+          .map<StatefulWidget>(
             (movie) => MovieCard(
-              poster: movie["poster_path"],
-              releaseDate: movie["release_date"],
-              title: movie["original_title"],
+              movie: movie,
             ),
           )
           .toList(),
