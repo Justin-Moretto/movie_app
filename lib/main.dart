@@ -2,20 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './widgets/movie_card.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
-  await FlutterConfig.loadEnvVariables();
+Future main() async {
+  await dotenv.load(fileName: "assets/.env");
 
   runApp(MyApp());
-}
-
-/// Access class for dev vars
-class Env {
-  static String get API_KEY => FlutterConfig.get('API_KEY');
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: MyHomePage(title: 'Latest Releases:', apiKey: Env.API_KEY),
+      home:
+          MyHomePage(title: 'Latest Releases:', apiKey: dotenv.env['API_KEY']),
     );
   }
 }
@@ -99,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //print("API KEY: ${widget.apiKey}");
     _latestReleases ?? _getLatestMovies();
     return Scaffold(
       appBar: AppBar(

@@ -10,6 +10,18 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:movie_app/main.dart';
 
+//unit test (API) - *Use Mockito
+//What should the app do when various error codes are thrown
+//In particular, what should it do if the api is broken?
+
+//widget test (MovieCard)
+//Is the poster being displayed?
+//Is the date formatted correctly?
+
+//integration test ()
+
+//golden test ()
+
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.

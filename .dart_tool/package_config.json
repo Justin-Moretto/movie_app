@@ -56,8 +56,8 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "flutter_config",
-      "rootUri": "file:///Users/justinmoretto/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_config-2.0.0",
+      "name": "flutter_dotenv",
+      "rootUri": "file:///Users/justinmoretto/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_dotenv-5.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -176,7 +176,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-09-01T18:02:41.483342Z",
+  "generated": "2021-09-07T15:08:15.300221Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }
