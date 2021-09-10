@@ -7,24 +7,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './widgets/movie_card.dart';
 
 Future main() async {
-  var apiKey;
+  await dotenv.load(fileName: "assets/.env");
 
-  if (String.fromEnvironment("api_key").length > 1) {
-    apiKey = String.fromEnvironment("api_key");
-  } else {
-    await dotenv.load(fileName: "assets/.env");
-    apiKey = dotenv.env['API_KEY'];
-  }
-
-  runApp(MyApp(
-    apiKey: apiKey,
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({@required this.apiKey});
-  final String apiKey;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,7 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: MyHomePage(title: 'Latest Releases:', apiKey: apiKey),
+      home:
+          MyHomePage(title: 'Latest Releases:', apiKey: dotenv.env['API_KEY']),
     );
   }
 }
