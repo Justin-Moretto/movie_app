@@ -3,7 +3,7 @@
 
 workflows:
   default-workflow:
-    name: Default Workflow
+    name: YAML Workflow
     max_build_duration: 45
     environment:
       vars:
