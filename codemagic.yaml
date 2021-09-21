@@ -36,8 +36,7 @@ workflows:
       - |
         mkdir assets
         echo "API_KEY=$API_KEY" >> assets/.env
-      - flutter build appbundle --release --build-number=$(($BUILD_NUMBER + 1)) --dart-define=build="$(($BUILD_NUMBER
-        + 1))"
+      - cd . && flutter build appbundle --release --build-name=1.0.0 --build-number=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
