@@ -14,6 +14,7 @@ workflows:
         FCI_KEYSTORE_PASSWORD: Encrypted(Z0FBQUFBQmhRT2hlQ0NDcTRoM2szY2E1TGJub1g0V2tVRkN4MlpZQlE1d0YtaTFiSTBnbkFBak9xQ09vbjRHRWpIOWJOTWFmSDlBVjZFcHdERmlKMnlnLVVoRjRNM1V4N3c9PQ==)
         FCI_KEY_PASSWORD: Encrypted(Z0FBQUFBQmhRT2hlT0Z4LURQWG90Wk02SkdtY0h5U0NDODJPR3d0bnVTNFJzanZPdVBKNEczLWRUN1J1a1R4WUlTSmh0RFVydUpudWE4Q2k0dXVHZF8xb2JCVWN3c3pwRUE9PQ==)
         FCI_KEY_ALIAS: Encrypted(Z0FBQUFBQmhRT2hlckRYemJZcmhzOGNraUloVy1zakFodEktUWVVMVcwa2V4aGlDUGJ3ZFZfeERxaW0yYUhvUVk1YVJRbzVyN1dYWDg0eE5KX2dPaWZ5OHFDTUU5eW1LVEE9PQ==)
+        PACKAGE_NAME: "com.example.movie_app"
         GOOGLE_PLAY_TRACK: "production"
       flutter: stable
       xcode: latest
@@ -38,7 +39,7 @@ workflows:
       - |
         mkdir assets
         echo "API_KEY=$API_KEY" >> assets/.env
-      - cd . && flutter build appbundle --release --build-name=1.0.0 --build-number=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))
+      - cd . && flutter build appbundle --release --build-name=1.0.0 --build-number=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1)) --verbose
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
