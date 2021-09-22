@@ -50,6 +50,6 @@ workflows:
         recipients:
           - justin.moretto@stack-labs.com
       google_play:
-        credentials: Encrypted(Z0FBQUFBQmhTZnRtSlp0VS02NzhITXFLSFl5SGlqa0NtVVFvUFVIaHJWVDBqdDJHelZEZzNPcGJ3dzZibnhJdDgzaktPbE8zNlhjNHlmYWd1QkoxUU01a1RlTER5aTU1QWttMDJmYjRBMzlPMkdQbmtQZ3JxaWs9)
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: $GOOGLE_PLAY_TRACK
         in_app_update_priority: 0
