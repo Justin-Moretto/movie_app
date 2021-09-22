@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/helpers.dart';
+
 class MovieCard extends StatefulWidget {
   MovieCard({
     Key key,
@@ -74,7 +76,7 @@ class _MovieCardState extends State<MovieCard> {
                   ),
                 ),
                 Text(
-                  releaseDate,
+                  formatDate(releaseDate),
                 ),
               ],
             ),

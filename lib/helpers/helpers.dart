@@ -1,4 +1,7 @@
-String formatDate(date) {
-  //TODO: format the releasedate string provided by moviedb api into something more readable
-  return date;
+import 'package:intl/intl.dart';
+
+/// Formats the release date returned by the api into something more human readable.
+String formatDate(String date) {
+  final dateTime = DateTime.parse(date);
+  return DateFormat.yMMMMd().format(dateTime);
 }
