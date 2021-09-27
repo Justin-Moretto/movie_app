@@ -17,6 +17,7 @@ workflows:
         FCI_KEY_ALIAS: Encrypted(Z0FBQUFBQmhRT2hlckRYemJZcmhzOGNraUloVy1zakFodEktUWVVMVcwa2V4aGlDUGJ3ZFZfeERxaW0yYUhvUVk1YVJRbzVyN1dYWDg0eE5KX2dPaWZ5OHFDTUU5eW1LVEE9PQ==)
         PACKAGE_NAME: "com.example.movie_app"
         GOOGLE_PLAY_TRACK: "production"
+        API_KEY: $API_KEY
       flutter: stable
       xcode: latest
       cocoapods: default
