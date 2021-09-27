@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './widgets/movie_card.dart';
 
 Future main() async {
+  //retrieve the api key from .env
   await dotenv.load(fileName: "assets/.env");
 
   runApp(MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MovieList',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
@@ -55,15 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _getLatestMovies() async {
     final apiKey = widget.apiKey;
-    final apiEndpoints = {
-      "upcoming":
-          "https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=en-US&page=1",
-      "top_rated":
-          "https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&language=en-US&page=1",
-      "now_playing":
-          "https://api.themoviedb.org/3/movie/now_playing?api_key=$apiKey&language=en-US&page=1",
-    };
-    var apiUrl = Uri.parse(apiEndpoints[_query]);
+    final apiEndpoint =
+        "https://api.themoviedb.org/3/movie/$_query?api_key=$apiKey&language=en-US&page=1";
+    var apiUrl = Uri.parse(apiEndpoint);
     var response = await http.get(apiUrl);
     if (response.statusCode == 200) {
       setState(() {
@@ -73,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //TODO: move this function to helpers
   String _displayTitle() {
     String title;
     switch (_query) {
