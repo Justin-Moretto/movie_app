@@ -38,6 +38,7 @@ workflows:
       - |
         #!/bin/sh
         set -ex
+        printenv
       - |
         mkdir assets
         echo "API_KEY=$API_KEY" >> assets/.env
