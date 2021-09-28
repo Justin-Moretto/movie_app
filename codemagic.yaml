@@ -34,11 +34,11 @@ workflows:
       - |
         #!/bin/sh
         set -ex
-        # printenv
+        printenv
       - |
         mkdir assets
         echo "API_KEY=$API_KEY" >> assets/.env
-      - cd . && flutter build appbundle --release --build-name=1.0.0 --build-number=$($PROJECT_BUILD_NUMBER + 1)
+      - cd . && flutter build appbundle --release --build-name=1.0.0 --build-number=$PROJECT_BUILD_NUMBER
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
