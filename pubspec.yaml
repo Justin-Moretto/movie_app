@@ -1,5 +1,5 @@
-name: movie_app
-description: A new Flutter project.
+name: move_list
+description: A Flutter project developped by Justin Moretto of Stack Labs Canada for the purpose of practicing CI/CD with codeMagic and learning Flutter packages.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
