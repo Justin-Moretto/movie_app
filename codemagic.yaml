@@ -14,7 +14,6 @@ workflows:
         FCI_KEYSTORE_PATH: /tmp/keystore.keystore
         PACKAGE_NAME: "com.example.movie_app"
         GOOGLE_PLAY_TRACK: "production"
-        API_KEY: $API_KEY
       flutter: stable
       xcode: latest
       cocoapods: default
