@@ -84,6 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         title = "Upcoming Releases:";
     }
+    //TEST: DELETE THIS LINE
+    title = widget.apiKey;
     return title;
   }
 
