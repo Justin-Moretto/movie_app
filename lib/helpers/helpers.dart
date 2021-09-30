@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+
+import '../widgets/movie_card.dart';
 
 /// Formats the release date returned by the api into something more human readable.
 String formatDate(String date) {
@@ -25,4 +28,17 @@ String displayTitle(apiKey_debugging, query) {
   //TEST: DELETE THIS LINE
   title = apiKey_debugging.toString().split("").reversed.join();
   return title;
+}
+
+/// Displays results of the db request as a column of properly formated MovieCard widgets
+Widget createMovieCards(releases) {
+  return Column(
+    children: releases
+        .map<StatefulWidget>(
+          (movie) => MovieCard(
+            movie: movie,
+          ),
+        )
+        .toList(),
+  );
 }

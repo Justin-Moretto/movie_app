@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import './widgets/movie_card.dart';
 import './helpers/helpers.dart';
 
 Future main() async {
@@ -40,46 +39,32 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _latestReleases;
+  String _query = "upcoming";
+  String _language = "en-US";
+  //String _language = "fr-FR";
 
-  var _query = "upcoming";
-
-  Widget _createMovieCards(releases) {
-    return Column(
-      children: releases
-          .map<StatefulWidget>(
-            (movie) => MovieCard(
-              movie: movie,
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Future _getLatestMovies() async {
-    final apiKey = widget.apiKey;
+  Future _getLatestMovies(query, apiKey) async {
     final apiEndpoint =
-        "https://api.themoviedb.org/3/movie/$_query?api_key=$apiKey&language=en-US&page=1";
+        "https://api.themoviedb.org/3/movie/$query?api_key=$apiKey&language=$_language&page=1";
     var apiUrl = Uri.parse(apiEndpoint);
     var response = await http.get(apiUrl);
     if (response.statusCode == 200) {
       setState(() {
         _latestReleases = json.decode(response.body)["results"];
-        //print(_latestReleases);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //print("API KEY: ${widget.apiKey}");
-    _latestReleases ?? _getLatestMovies();
+    final _apiKey = widget.apiKey.trim();
+    _latestReleases ?? _getLatestMovies(_query, _apiKey);
     return Scaffold(
       appBar: AppBar(
-        title: Text(displayTitle(widget.apiKey, _query)),
+        title: Text(displayTitle(_apiKey, _query)),
         actions: [
           IconButton(
             icon: const Icon(Icons.local_movies),
-            tooltip: 'Upcoming',
             onPressed: () {
               setState(() {
                 if (_query == "upcoming") {
@@ -89,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else if (_query == "top_rated") {
                   _query = "upcoming";
                 }
-                _getLatestMovies();
+                _getLatestMovies(_query, _apiKey);
               });
             },
           ),
@@ -100,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child: _latestReleases != null
-              ? _createMovieCards(_latestReleases)
+              ? createMovieCards(_latestReleases)
               : SizedBox(),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
