@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './widgets/movie_card.dart';
+import './helpers/helpers.dart';
 
 Future main() async {
   //retrieve the api key from .env
@@ -68,34 +69,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //TODO: move this function to helpers
-  String _displayTitle() {
-    String title;
-    switch (_query) {
-      case "upcoming":
-        title = "Upcoming Releases:";
-        break;
-      case "top_rated":
-        title = "Top Rated:";
-        break;
-      case "now_playing":
-        title = "Now playing:";
-        break;
-      default:
-        title = "Upcoming Releases:";
-    }
-    //TEST: DELETE THIS LINE
-    title = widget.apiKey;
-    return title;
-  }
-
   @override
   Widget build(BuildContext context) {
     //print("API KEY: ${widget.apiKey}");
     _latestReleases ?? _getLatestMovies();
     return Scaffold(
       appBar: AppBar(
-        title: Text(_displayTitle()),
+        title: Text(displayTitle(widget.apiKey, _query)),
         actions: [
           IconButton(
             icon: const Icon(Icons.local_movies),
