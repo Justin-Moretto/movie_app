@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './helpers/helpers.dart';
 
 Future main() async {
-  //retrieve the api key from .env
+  //retrieve the api key from .env using built-in methods from the dotenv package
   await dotenv.load(fileName: "assets/.env");
 
   runApp(MyApp());
@@ -18,9 +18,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MovieList',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
       home:
           MyHomePage(title: 'Latest Releases:', apiKey: dotenv.env['API_KEY']),
     );
@@ -43,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _language = "en-US";
   //String _language = "fr-FR";
 
+  /// Queries the movie database api for movies. Parameters: query, api key, language
   Future _getLatestMovies(query, apiKey) async {
     final apiEndpoint =
         "https://api.themoviedb.org/3/movie/$query?api_key=$apiKey&language=$_language&page=1";
@@ -86,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.all(20),
           child: _latestReleases != null
               ? createMovieCards(_latestReleases)
-              : SizedBox(),
+              : Text("Loading..."),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

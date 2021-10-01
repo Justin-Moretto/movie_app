@@ -25,8 +25,6 @@ String displayTitle(apiKey_debugging, query) {
     default:
       title = "Upcoming Releases:";
   }
-  //TEST: DELETE THIS LINE
-  title = apiKey_debugging.toString().split("").reversed.join();
   return title;
 }
 
