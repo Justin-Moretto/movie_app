@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../helpers/helpers.dart';
 
+///A container which displays the movie's title, poster and release date. If the poster is clicked by the user, it displays a brief description of the movie, rather than the poster.
 class MovieCard extends StatefulWidget {
   MovieCard({
     Key key,
@@ -19,6 +20,7 @@ class MovieCard extends StatefulWidget {
 
 class _MovieCardState extends State<MovieCard> {
   ///displays either the film's poster or it's description
+  /// TODO: move this to helpers? Maybe after I learn to save the poster images so that the aren't requested every time
   Widget _displayImage(poster, description, toggle) {
     if (toggle) {
       return Image.network(

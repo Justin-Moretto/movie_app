@@ -31,20 +31,27 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+//TODO: Save the responses from the api requests as state, so that there is no loading when the user switches views
 class _MyHomePageState extends State<MyHomePage> {
-  List _latestReleases;
   String _query = "upcoming";
   //String _language = "en-US";
   //String _language = "fr-FR";
+  //TODO
+  final Map _cachedResponse = {
+    "upcoming": null,
+    "now_playing": null,
+    "top_rated": null,
+  };
 
   @override
   Widget build(BuildContext context) {
     final _apiKey = widget.apiKey.trim();
-    _latestReleases ??
-        getLatestMovies(query: _query, apiKey: _apiKey)
-            .then((response) => setState(() {
-                  _latestReleases = response;
-                }));
+    if (_cachedResponse[_query] == null) {
+      getLatestMovies(query: _query, apiKey: _apiKey)
+          .then((response) => setState(() {
+                _cachedResponse[_query] = response;
+              }));
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(displayTitle(_query)),
@@ -54,8 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               setState(() {
                 _query = changeQuery(_query);
-                getLatestMovies(query: changeQuery(_query), apiKey: _apiKey)
-                    .then((response) => _latestReleases = response);
+                if (_cachedResponse[changeQuery(_query)] == null) {
+                  getLatestMovies(query: changeQuery(_query), apiKey: _apiKey)
+                      .then((response) =>
+                          _cachedResponse[changeQuery(_query)] = response);
+                }
               });
             },
           ),
@@ -65,8 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
-          child: _latestReleases != null
-              ? createMovieCards(_latestReleases)
+          child: _cachedResponse[_query] != null
+              ? createMovieCards(_cachedResponse[_query])
               : Text("Loading..."),
         ),
       ),
