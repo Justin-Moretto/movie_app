@@ -176,13 +176,13 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "movie_app",
+      "name": "move_list",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-09-27T19:23:37.430016Z",
+  "generated": "2021-10-12T17:02:30.045769Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }

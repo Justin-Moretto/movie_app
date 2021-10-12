@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import './widgets/movie_card.dart';
+import './helpers/helpers.dart';
 
 Future main() async {
-  //retrieve the api key from .env
+  //retrieve the api key from .env using built-in methods from the dotenv package
   await dotenv.load(fileName: "assets/.env");
 
   runApp(MyApp());
@@ -18,9 +15,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MovieList',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
       home:
           MyHomePage(title: 'Latest Releases:', apiKey: dotenv.env['API_KEY']),
     );
@@ -37,77 +31,41 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+//TODO: Save the responses from the api requests as state, so that there is no loading when the user switches views
 class _MyHomePageState extends State<MyHomePage> {
-  List _latestReleases;
-
-  var _query = "upcoming";
-
-  Widget _createMovieCards(releases) {
-    return Column(
-      children: releases
-          .map<StatefulWidget>(
-            (movie) => MovieCard(
-              movie: movie,
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Future _getLatestMovies() async {
-    final apiKey = widget.apiKey;
-    final apiEndpoint =
-        "https://api.themoviedb.org/3/movie/$_query?api_key=$apiKey&language=en-US&page=1";
-    var apiUrl = Uri.parse(apiEndpoint);
-    var response = await http.get(apiUrl);
-    if (response.statusCode == 200) {
-      setState(() {
-        _latestReleases = json.decode(response.body)["results"];
-        //print(_latestReleases);
-      });
-    }
-  }
-
-  //TODO: move this function to helpers
-  String _displayTitle() {
-    String title;
-    switch (_query) {
-      case "upcoming":
-        title = "Upcoming Releases:";
-        break;
-      case "top_rated":
-        title = "Top Rated:";
-        break;
-      case "now_playing":
-        title = "Now playing:";
-        break;
-      default:
-        title = "Upcoming Releases:";
-    }
-    return title;
-  }
+  String _query = "upcoming";
+  //String _language = "en-US";
+  //String _language = "fr-FR";
+  //TODO
+  final Map _cachedResponse = {
+    "upcoming": null,
+    "now_playing": null,
+    "top_rated": null,
+  };
 
   @override
   Widget build(BuildContext context) {
-    //print("API KEY: ${widget.apiKey}");
-    _latestReleases ?? _getLatestMovies();
+    final _apiKey = widget.apiKey.trim();
+    if (_cachedResponse[_query] == null) {
+      getLatestMovies(query: _query, apiKey: _apiKey)
+          .then((response) => setState(() {
+                _cachedResponse[_query] = response;
+              }));
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(_displayTitle()),
+        title: Text(displayTitle(_query)),
         actions: [
           IconButton(
             icon: const Icon(Icons.local_movies),
-            tooltip: 'Upcoming',
             onPressed: () {
               setState(() {
-                if (_query == "upcoming") {
-                  _query = "now_playing";
-                } else if (_query == "now_playing") {
-                  _query = "top_rated";
-                } else if (_query == "top_rated") {
-                  _query = "upcoming";
+                _query = changeQuery(_query);
+                if (_cachedResponse[changeQuery(_query)] == null) {
+                  getLatestMovies(query: changeQuery(_query), apiKey: _apiKey)
+                      .then((response) =>
+                          _cachedResponse[changeQuery(_query)] = response);
                 }
-                _getLatestMovies();
               });
             },
           ),
@@ -117,11 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
-          child: _latestReleases != null
-              ? _createMovieCards(_latestReleases)
-              : SizedBox(),
+          child: _cachedResponse[_query] != null
+              ? createMovieCards(_cachedResponse[_query])
+              : Text("Loading..."),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
