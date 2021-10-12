@@ -17,16 +17,16 @@ String displayTitle(query) {
   String title;
   switch (query) {
     case "upcoming":
-      title = "Upcoming Releases:";
+      title = "Upcoming Releases";
       break;
     case "now_playing":
-      title = "Now playing:";
+      title = "Now playing";
       break;
     case "top_rated":
-      title = "Top Rated:";
+      title = "Top Rated";
       break;
     default:
-      title = "Upcoming Releases:";
+      title = "Upcoming Releases";
   }
   return title;
 }

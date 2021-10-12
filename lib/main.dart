@@ -53,8 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
               }));
     }
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade100,
       appBar: AppBar(
-        title: Text(displayTitle(_query)),
+        title: Text(
+          displayTitle(_query),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.local_movies),
@@ -70,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        backgroundColor: Colors.indigo.shade500,
+        backgroundColor: Colors.blueGrey.shade500,
       ),
       body: Center(
         child: SingleChildScrollView(

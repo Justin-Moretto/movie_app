@@ -32,11 +32,13 @@ class _MovieCardState extends State<MovieCard> {
         height: 400,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(11),
-            color: Colors.blueGrey.shade200),
+            color: Colors.blueGrey.shade100),
         child: Center(
-          child: Text(
-            description,
-            textAlign: TextAlign.center,
+          child: Container(
+            constraints: BoxConstraints(maxWidth: 220),
+            child: Text(
+              description,
+            ),
           ),
         ),
       );
@@ -64,7 +66,7 @@ class _MovieCardState extends State<MovieCard> {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(11),
-                color: Colors.blueGrey.shade100),
+                color: Colors.blueGrey.shade200),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
