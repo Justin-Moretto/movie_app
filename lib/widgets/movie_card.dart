@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,9 +24,15 @@ class _MovieCardState extends State<MovieCard> {
   /// TODO: move this to helpers? Maybe after I learn to save the poster images so that the aren't requested every time
   Widget _displayImage(poster, description, toggle) {
     if (toggle) {
-      return Image.network(
-        poster,
+      return Container(
         height: 400,
+        child: CachedNetworkImage(
+          imageUrl: poster,
+          alignment: Alignment.center,
+          placeholder: (context, url) => Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
       );
     } else {
       return Container(
